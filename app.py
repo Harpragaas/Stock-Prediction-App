@@ -20,9 +20,32 @@ st.title("HP's STOCK PREDICTION APP")
 
 st.sidebar.subheader("Enter Stock Details")
 
+stock_lookup = {
+    "All Ordinaries": {
+        "yfinance_ticker": "^AORD",
+    },
+    "S&P/ASX 200": {
+        "yfinance_ticker": "^AXJO",
+    },
+    "Australian dollar vs United States dollar": {
+        "yfinance_ticker": "AUDUSD=X",
+    },
+    "Gold (Commodity)": {
+        "yfinance_ticker": "GC=F",
+    },
+    "Crude Oil (Commodity)": {
+        "yfinance_ticker": "CL=F",
+    },
+    "Bitcoin vs Australian dollar": {
+        "yfinance_ticker": "BTC-AUD",
+    },
+    "Crypto200 Index": {
+        "yfinance_ticker": "^CMC200",
+    },
+}
 
-stocks = ('^AORD','^AXJO','AUDUSD=X','GC=F','CL=F','BTC-AUD','^CMC200')
-selected_stock = st.sidebar.selectbox('Select the Stock',stocks)
+selected_stock = st.sidebar.selectbox('Select the Stock', stock_lookup.keys())
+get_ticker = lambda stock_name : stock_lookup[stock_name]["yfinance_ticker"]
 
 n_years = st.sidebar.slider('Enter number of years',1,10)
 y = n_years*365
@@ -38,8 +61,7 @@ def data_load(ticker):
     data.reset_index(inplace=True)
     return data
 
-
-data = data_load(selected_stock)
+data = data_load(get_ticker(selected_stock))
 
 
 st.subheader('Latest Stock Trend')
